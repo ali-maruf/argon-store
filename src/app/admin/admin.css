@@ -1,0 +1,42 @@
+/* Admin: clean Shopify-like UI on top of the storefront tokens (light by default, dark optional). */
+.admin { --panel: #ffffff; --panel2: #f6f5f4; --bg: #EFEDEB; font-size: 14px; }
+:root[data-theme="dark"] .admin, .admin[data-theme="dark"] { --panel: #141416; --panel2: #1b1b1e; }
+:root[data-theme="dark"] { --bg: #0A0A0B; --fg: #EEE9E6; --muted: #A3A8AF; --line: rgba(238,233,230,.12); --glass: rgba(238,233,230,.06); color-scheme: dark; }
+.admin .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+.admin .card-h { padding: 14px 18px; border-bottom: 1px solid var(--line); font-weight: 600; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.admin .card-b { padding: 16px 18px; }
+.admin .btn { min-height: 36px; padding: 0 14px; font-size: 13px; border-radius: 10px; }
+.admin .btn-primary { background: #0A0A0B; color: #fff; box-shadow: none; }
+:root[data-theme="dark"] .admin .btn-primary { background: #EEE9E6; color: #0A0A0B; }
+.admin .btn-danger { background: #b4232f; color: #fff; }
+.admin .input { min-height: 36px; padding: 7px 10px; font-size: 14px; border-radius: 10px; background: var(--panel); }
+.admin select.input { padding-right: 28px; }
+.admin textarea.input { min-height: 80px; }
+.admin label.f { display: block; }
+.admin label.f > span { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; font-weight: 500; }
+.admin table.t { width: 100%; border-collapse: collapse; }
+.admin table.t th { text-align: left; font-size: 12px; font-weight: 500; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--panel2); white-space: nowrap; }
+.admin table.t td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.admin table.t tr:hover td { background: var(--panel2); }
+.admin .chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 500; white-space: nowrap; background: var(--panel2); border: 1px solid var(--line); }
+.admin .chip-green { background: #dcf5e8; color: #0b6b3a; border-color: transparent; }
+.admin .chip-yellow { background: #fff2c6; color: #7a5600; border-color: transparent; }
+.admin .chip-red { background: #fde0e3; color: #9b1c2a; border-color: transparent; }
+.admin .chip-blue { background: #e0ecff; color: #1d4ea3; border-color: transparent; }
+:root[data-theme="dark"] .admin .chip-green { background: #0f3324; color: #7be3ad; }
+:root[data-theme="dark"] .admin .chip-yellow { background: #3a2e05; color: #ffd866; }
+:root[data-theme="dark"] .admin .chip-red { background: #3d0f15; color: #ff9aa6; }
+:root[data-theme="dark"] .admin .chip-blue { background: #0f2245; color: #9cc0ff; }
+.admin .tabs a { padding: 8px 12px; border-radius: 10px; font-size: 13px; color: var(--muted); white-space: nowrap; }
+.admin .tabs a[aria-current="page"] { background: var(--panel); color: var(--fg); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.06); }
+.admin .navlink { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 9px; color: var(--muted); font-size: 13.5px; }
+.admin .navlink:hover { background: var(--glass); color: var(--fg); }
+.admin .navlink[aria-current="page"] { background: var(--panel); color: var(--fg); font-weight: 600; }
+.admin h1.page { font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+@media print {
+  .admin aside, .admin header, .admin .no-print { display: none !important; }
+  .admin main { padding: 0 !important; margin: 0 !important; }
+}
+
+/* Let grid columns shrink so wide tables scroll inside their card instead of stretching the page. */
+.admin .grid > * { min-width: 0; }
