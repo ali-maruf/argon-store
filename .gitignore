@@ -8,3 +8,9 @@ out
 *.tsbuildinfo
 next-env.d.ts
 public/uploads
+
+.vercel
+.env*
+.next-check
+*.local.txt
+!.env.example

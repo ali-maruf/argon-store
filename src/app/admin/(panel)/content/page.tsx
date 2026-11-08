@@ -9,7 +9,7 @@ import { SettingsForm } from "@/components/admin/SettingsForm";
 import { JsonListEditor } from "@/components/admin/JsonListEditor";
 
 export const metadata = { title: "Content" };
-const LABELS: Record<string, string> = { hero: "Hero (3D logo)", categories: "Category tiles", bestsellers: "Bestsellers row", trust: "Trust strip", limited: "Limited stock drop", ugc: "Instagram / UGC grid", reviews: "Reviews (real only)", newsletter: "Join the drop list" };
+const LABELS: Record<string, string> = { hero: "Hero video", marquee: "Scrolling promise strip", categories: "Category cards", bestsellers: "Bestsellers carousel", story: "Material story (image + text)", lookbook: "Lookbook video banner", limited: "Almost gone (limited stock)", mosaic: "Collections mosaic", reviews: "Reviews (real only)", ugc: "Instagram marquee" };
 
 async function sectionAction(fd: FormData) {
   "use server";
@@ -45,7 +45,15 @@ export default async function Content({ searchParams }: { searchParams: Promise<
         <SettingsForm section="hero" title="Homepage hero (A/B‑ready copy)" back="/admin/content" cols={1} fields={[
           { name: "headline", label: "Headline (EN)", value: s.hero.headline }, { name: "headlineBn", label: "Headline (BN)", value: s.hero.headlineBn },
           { name: "cta", label: "Primary CTA (EN)", value: s.hero.cta }, { name: "ctaBn", label: "Primary CTA (BN)", value: s.hero.ctaBn },
-          { name: "enable3d", label: "Enable 3D chrome logo (lazy‑loaded; falls back to static image)", type: "bool", value: s.hero.enable3d },
+          { name: "eyebrow", label: "Eyebrow (EN)", value: s.hero.eyebrow }, { name: "eyebrowBn", label: "Eyebrow (BN)", value: s.hero.eyebrowBn },
+          { name: "video", label: "Hero video MP4 (desktop, 16:9, muted loop)", value: s.hero.video, help: "Upload to Vercel Blob or any CDN and paste the URL. Keep under ~2 MB." },
+          { name: "videoWebm", label: "Hero video WebM (optional, smaller)", value: s.hero.videoWebm },
+          { name: "videoMobile", label: "Hero video MP4 (mobile, 9:16)", value: s.hero.videoMobile },
+          { name: "videoMobileWebm", label: "Hero video WebM (mobile, optional)", value: s.hero.videoMobileWebm },
+          { name: "poster", label: "Poster image (desktop)", value: s.hero.poster }, { name: "posterMobile", label: "Poster image (mobile)", value: s.hero.posterMobile },
+          { name: "lookbookVideo", label: "Lookbook banner video MP4", value: s.hero.lookbookVideo },
+          { name: "lookbookWebm", label: "Lookbook banner video WebM", value: s.hero.lookbookWebm },
+          { name: "lookbookPoster", label: "Lookbook poster", value: s.hero.lookbookPoster },
         ]} />
         <div className="card">
           <div className="card-h">Homepage sections <span className="text-[12px] font-normal text-[var(--muted)]">Reorder, show or hide</span></div>

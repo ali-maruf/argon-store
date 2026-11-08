@@ -10,6 +10,7 @@ const securityHeaders = [
 
 const config: NextConfig = {
   poweredByHeader: false,
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [320, 640, 960, 1200],

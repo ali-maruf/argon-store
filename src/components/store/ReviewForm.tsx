@@ -11,7 +11,7 @@ export function ReviewForm({ productId }: { productId: string }) {
   if (status?.ok) return <p role="status" className="text-[14px]">✦ {status.msg}</p>;
   return (
     <form
-      className="glass mt-4 w-full space-y-3 rounded-[var(--radius-card)] p-5"
+      className="glass mt-4 w-full space-y-3 rounded-sm p-5"
       onSubmit={async (e) => {
         e.preventDefault(); setBusy(true);
         const fd = new FormData(e.currentTarget); fd.set("productId", productId); fd.set("rating", String(rating));

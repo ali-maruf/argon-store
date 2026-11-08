@@ -1,3 +1,5 @@
 assets
 .pgdata
 scripts/local-db.mjs
+*.local.txt
+.env*

@@ -17,7 +17,7 @@ npm run db:seed                 # 27 products, zones, CMS pages, templates, role
 npm run dev                     # http://localhost:3000  ·  admin: /admin
 ```
 
-With `npm run db:local`, use `DATABASE_URL=DIRECT_URL=postgresql://argon:argon@localhost:5433/argon`.
+With `npm run db:local`, use `DATABASE_URL=DATABASE_URL_UNPOOLED=postgresql://argon:argon@localhost:5433/argon`.
 
 The first admin login asks for the owner email and password, then **forces TOTP 2FA setup** (scan the QR code with Google Authenticator, 1Password or Authy).
 
@@ -25,12 +25,12 @@ The first admin login asks for the owner email and password, then **forces TOTP 
 
 ## Deploy (Vercel + Supabase/Neon)
 
-1. Create a Postgres database in **Singapore**. On Supabase, use the pooled URL (`:6543?pgbouncer=true&connection_limit=1`) for `DATABASE_URL` and the direct URL for `DIRECT_URL`.
+1. Create a Postgres database in **Singapore**. On Supabase, use the pooled URL (`:6543?pgbouncer=true&connection_limit=1`) for `DATABASE_URL` and the direct URL for `DATABASE_URL_UNPOOLED` (the Vercel Neon integration sets both automatically).
 2. `vercel link`, then add the environment variables from `.env.example` (Production + Preview).
-   - Required: `DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET`, `NEXT_PUBLIC_SITE_URL`, `CRON_SECRET`, `OWNER_EMAIL`, `OWNER_PASSWORD`.
+   - Required: `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `AUTH_SECRET`, `NEXT_PUBLIC_SITE_URL`, `CRON_SECRET`, `OWNER_EMAIL`, `OWNER_PASSWORD`.
    - Add a **Vercel Blob** store so product uploads work (`BLOB_READ_WRITE_TOKEN`).
 3. Deploy. The `vercel-build` script runs `prisma migrate deploy` before `next build`.
-4. Seed once against production: `DATABASE_URL=… DIRECT_URL=… OWNER_EMAIL=… OWNER_PASSWORD=… npm run db:seed`.
+4. Seed once against production: `DATABASE_URL=… DATABASE_URL_UNPOOLED=… OWNER_EMAIL=… OWNER_PASSWORD=… npm run db:seed`.
 5. Cron jobs are declared in `vercel.json`:
    - Courier status sync and abandoned‑checkout reminders, every 30 minutes.
    - Low‑stock alerts and review requests, daily.

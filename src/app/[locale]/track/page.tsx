@@ -27,7 +27,7 @@ export default async function Track({ params, searchParams }: { params: Promise<
       const url = order.courier && order.trackingNumber ? courier(order.courier).trackingUrl(order.trackingNumber) : "";
       result = (
         <div className="mt-10">
-          <div className="glass rounded-[var(--radius-card)] p-6">
+          <div className="glass rounded-sm p-6">
             <p className="eyebrow">{d.orderNumber}</p>
             <p className="tnum mt-1 text-2xl font-semibold">{order.orderNumber}</p>
             {stage === -1 ? <p className="mt-4 text-[var(--accent)]">This order was cancelled.</p> : (

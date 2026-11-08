@@ -131,12 +131,12 @@ export function CheckoutForm({ locale, districts, areas, zones, methods, s }: {
       <ul className="space-y-4">
         {(q?.lines ?? []).map((l) => (
           <li key={l.variantId} className="flex items-center gap-3">
-            <div className="relative"><Image src={l.image} alt="" width={64} height={64} className="h-16 w-16 rounded-xl object-cover" /><span className="tnum absolute -right-2 -top-2 grid h-5 min-w-5 place-items-center rounded-full bg-[var(--fg)] px-1 text-[11px] font-bold text-[var(--bg)]">{l.qty}</span></div>
+            <div className="relative"><Image src={l.image} alt="" width={64} height={64} className="h-16 w-16 rounded-sm object-cover" /><span className="tnum absolute -right-2 -top-2 grid h-5 min-w-5 place-items-center rounded-full bg-[var(--fg)] px-1 text-[11px] font-bold text-[var(--bg)]">{l.qty}</span></div>
             <div className="min-w-0 flex-1"><p className="truncate text-[14px]">{l.title}</p>{l.variantTitle !== "Default" && <p className="text-[12px] text-[var(--muted)]">{l.variantTitle}</p>}</div>
             <p className="tnum text-[14px]">{tk(l.lineTotal)}</p>
           </li>
         ))}
-        {!q && Array.from({ length: Math.max(1, items.length) }).map((_, i) => <li key={i} className="skeleton h-16 rounded-xl" />)}
+        {!q && Array.from({ length: Math.max(1, items.length) }).map((_, i) => <li key={i} className="skeleton h-16 rounded-sm" />)}
       </ul>
       <div className="border-t border-[var(--line)] pt-4">
         {!codeOpen && !f.code ? (
@@ -162,7 +162,7 @@ export function CheckoutForm({ locale, districts, areas, zones, methods, s }: {
   return (
     <form onSubmit={submit} noValidate className="grid gap-8 md:grid-cols-12 md:gap-12">
       {/* Mobile collapsible summary */}
-      <div className="glass rounded-2xl md:hidden">
+      <div className="glass rounded-sm md:hidden">
         <button type="button" onClick={() => setSummaryOpen((o) => !o)} aria-expanded={summaryOpen} className="flex w-full items-center justify-between px-4 py-4 text-[14px]">
           <span>{summaryOpen ? s.hideSummary : s.showSummary} ▾</span><span className="tnum font-semibold">{q ? tk(q.total) : ""}</span>
         </button>
@@ -195,7 +195,7 @@ export function CheckoutForm({ locale, districts, areas, zones, methods, s }: {
           <h2 id="c2" className="eyebrow mb-4 !text-[var(--fg)]">2 · {s.deliveryZone}</h2>
           <div className="grid gap-2 sm:grid-cols-3">
             {zones.map((z) => (
-              <div key={z.key} className={`rounded-2xl border p-4 text-[13px] transition-colors ${zoneKey === z.key ? "border-[var(--fg)] bg-[var(--glass)]" : "border-[var(--line)] opacity-60"}`} aria-current={zoneKey === z.key}>
+              <div key={z.key} className={`rounded-sm border p-4 text-[13px] transition-colors ${zoneKey === z.key ? "border-[var(--fg)] bg-[var(--glass)]" : "border-[var(--line)] opacity-60"}`} aria-current={zoneKey === z.key}>
                 <p className="font-medium">{z.name}</p><p className="tnum text-[var(--muted)]">{q?.freeShipping && zoneKey === z.key ? "FREE" : tk(z.rate)} · {z.eta}</p>
               </div>
             ))}
@@ -207,7 +207,7 @@ export function CheckoutForm({ locale, districts, areas, zones, methods, s }: {
           <h2 id="c3" className="eyebrow mb-4 !text-[var(--fg)]">3 · {s.payment}</h2>
           <div className="space-y-2" role="radiogroup" aria-labelledby="c3">
             {pmOpts.map((m) => (
-              <label key={m.v} className={`flex min-h-16 cursor-pointer items-center gap-4 rounded-2xl border px-4 py-3 transition-colors ${f.paymentMethod === m.v ? "border-[var(--fg)] bg-[var(--glass)]" : "border-[var(--line)]"}`}>
+              <label key={m.v} className={`flex min-h-16 cursor-pointer items-center gap-4 rounded-sm border px-4 py-3 transition-colors ${f.paymentMethod === m.v ? "border-[var(--fg)] bg-[var(--glass)]" : "border-[var(--line)]"}`}>
                 <input type="radio" name="pm" value={m.v} checked={f.paymentMethod === m.v} onChange={() => setF((x) => ({ ...x, paymentMethod: m.v }))} className="h-5 w-5 accent-[var(--fg)]" />
                 <span className="flex-1"><span className="block text-[15px] font-medium">{m.t}</span><span className="block text-[12px] text-[var(--muted)]">{m.sub}</span></span>
                 <span className="rounded-md border border-[var(--line)] px-2 py-1 text-[11px] font-bold tracking-wide">{m.logo}</span>
@@ -222,8 +222,8 @@ export function CheckoutForm({ locale, districts, areas, zones, methods, s }: {
           </Field>
         )}
 
-        {q?.errors.filter((x) => !/code|Add ৳/.test(x)).map((x) => <p key={x} role="alert" className="rounded-xl border border-[#ff5d73]/40 px-4 py-3 text-[14px] text-[#ff8a9a]">{x}</p>)}
-        {err && !err.field && <p role="alert" className="rounded-xl border border-[#ff5d73]/40 px-4 py-3 text-[14px] text-[#ff8a9a]">{err.msg}</p>}
+        {q?.errors.filter((x) => !/code|Add ৳/.test(x)).map((x) => <p key={x} role="alert" className="rounded-sm border border-[#ff5d73]/40 px-4 py-3 text-[14px] text-[#ff8a9a]">{x}</p>)}
+        {err && !err.field && <p role="alert" className="rounded-sm border border-[#ff5d73]/40 px-4 py-3 text-[14px] text-[#ff8a9a]">{err.msg}</p>}
         {err?.field === "paymentMethod" && <p role="alert" className="text-[14px] text-[#ff8a9a]">{err.msg}</p>}
 
         <button type="submit" disabled={busy || !q || q.errors.some((x) => /sold out|left of|no longer/.test(x))} className="btn btn-crimson !min-h-16 w-full text-[17px]" aria-busy={busy}>
@@ -233,7 +233,7 @@ export function CheckoutForm({ locale, districts, areas, zones, methods, s }: {
       </div>
 
       <aside className="hidden md:col-span-5 md:block">
-        <div className="glass sticky top-24 rounded-[var(--radius-card)] p-6"><h2 className="eyebrow mb-5 !text-[var(--fg)]">{s.orderSummary}</h2>{summary}</div>
+        <div className="glass sticky top-24 rounded-sm p-6"><h2 className="eyebrow mb-5 !text-[var(--fg)]">{s.orderSummary}</h2>{summary}</div>
       </aside>
     </form>
   );

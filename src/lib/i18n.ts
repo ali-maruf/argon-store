@@ -80,8 +80,8 @@ export function t(locale: Locale, key: TKey, vars?: Record<string, string | numb
   return s;
 }
 export const CATEGORIES: { key: string; label: TKey; image: string }[] = [
-  { key: "rings", label: "rings", image: "/products/3.webp" },
-  { key: "chains", label: "chains", image: "/products/8.webp" },
-  { key: "bracelets", label: "bracelets", image: "/products/12.webp" },
-  { key: "eyewear", label: "eyewear", image: "/products/4.webp" },
+  { key: "rings", label: "rings", image: "/products/clean/3.webp" },
+  { key: "chains", label: "chains", image: "/products/clean/8.webp" },
+  { key: "bracelets", label: "bracelets", image: "/products/clean/12.webp" },
+  { key: "eyewear", label: "eyewear", image: "/products/clean/4.webp" },
 ];

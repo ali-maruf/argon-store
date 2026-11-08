@@ -75,7 +75,7 @@ export function CartDrawer({ locale, freeThreshold, freeBar, insideRate, outside
             <ul className="divide-y divide-[var(--line)]">
               {st.lines.map((l) => (
                 <li key={l.variantId} className="flex gap-4 py-4">
-                  <Image src={l.image} alt={l.title} width={80} height={80} className="h-20 w-20 rounded-xl object-cover" />
+                  <Image src={l.image} alt={l.title} width={80} height={80} className="h-20 w-20 rounded-sm object-cover" />
                   <div className="min-w-0 flex-1">
                     <Link href={`${prefix}/product/${l.slug}`} onClick={() => cart.setOpen(false)} className="block truncate text-[15px] font-medium">{l.title}</Link>
                     {l.variantTitle !== "Default" && <p className="text-[13px] text-[var(--muted)]">{l.variantTitle}</p>}
@@ -90,7 +90,7 @@ export function CartDrawer({ locale, freeThreshold, freeBar, insideRate, outside
             </ul>
           )}
           {showUpsell && upsell && (
-            <div className="glass my-3 flex items-center gap-3 rounded-2xl p-3">
+            <div className="glass my-3 flex items-center gap-3 rounded-sm p-3">
               <Image src={upsell.image} alt="" width={56} height={56} className="h-14 w-14 rounded-lg object-cover" />
               <p className="flex-1 text-[13px]">{s.add} <span className="font-medium">{upsell.title}</span> <span className="text-[var(--muted)]">({upsell.variantTitle})</span> {locale === "bn" ? "মাত্র" : "for"} <span className="tnum">{tk(upsell.price)}</span></p>
               <button className="btn btn-ghost !min-h-10 !px-4 text-[13px]" onClick={() => cart.add({ ...upsell, maxQty: upsell.stock }, 1, true)}>+ {s.add}</button>

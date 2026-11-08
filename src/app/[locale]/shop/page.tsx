@@ -9,5 +9,5 @@ export const metadata: Metadata = { title: "Shop all", description: "Rings, chai
 export default async function Shop({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   const d = getDict(locale);
-  return <CollectionView locale={locale} eyebrow="✦ ARGON" title={d.shop} products={await getAllProducts()} showCategory />;
+  return <CollectionView locale={locale} eyebrow="Drop 01" title={d.shop} products={await getAllProducts()} showCategory banner="/editorial/16.webp" />;
 }

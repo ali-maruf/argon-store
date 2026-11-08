@@ -8,6 +8,7 @@ import { getSettings } from "@/lib/settings";
 import { ProductDetail } from "@/components/store/ProductDetail";
 import { ProductCard } from "@/components/store/ProductCard";
 import { Stars } from "@/components/store/Stars";
+import { Carousel } from "@/components/store/Carousel";
 import { ReviewForm } from "@/components/store/ReviewForm";
 import { RingSizeTable } from "@/components/store/RingSizeTable";
 import { db } from "@/lib/db";
@@ -42,7 +43,7 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
   const [settings, all, reviews] = await Promise.all([getSettings(), getAllProducts(), getApprovedReviews(p.id, 20)]);
   const others = all.filter((x) => x.id !== p.id && x.stock > 0);
   const look = [...new Map(others.filter((x) => x.category !== p.category).map((x) => [x.category, x])).values()].slice(0, 3);
-  const like = others.filter((x) => x.category === p.category).slice(0, 4);
+  const like = others.filter((x) => x.category === p.category).slice(0, 8);
   const labels = { add: d.add, soldOut: d.soldOut, onlyLeft: d.onlyLeft };
   const desc = locale === "bn" && p.descriptionBn ? p.descriptionBn : p.description;
 
@@ -62,56 +63,65 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
     ],
   }];
 
-  const acc = (title: string, body: React.ReactNode, open = false) => (
-    <details className="group border-b border-[var(--line)] py-1" open={open}>
-      <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between text-[15px] font-medium">{title}<span className="transition-transform group-open:rotate-45">+</span></summary>
-      <div className="prose-argon pb-5 text-[14px]">{body}</div>
+  const acc = (id: string, title: string, body: React.ReactNode, open = false) => (
+    <details id={id} className="group scroll-mt-28 border-b border-[var(--line)]" open={open}>
+      <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between text-[13px] font-medium uppercase tracking-[0.14em]">{title}<span className="relative h-3 w-3"><span className="absolute inset-x-0 top-1/2 h-px bg-current" /><span className="absolute inset-y-0 left-1/2 w-px bg-current transition-transform duration-300 group-open:rotate-90 group-open:opacity-0" /></span></summary>
+      <div className="prose-argon pb-6 text-[14px]">{body}</div>
     </details>
+  );
+  const crumb = (
+    <nav aria-label="Breadcrumb" className="text-[11px] uppercase tracking-[0.16em] text-[var(--muted)]">
+      <Link href={lhref(locale, "/shop")} className="ulink">{d.shop}</Link> <span className="mx-1.5">/</span> <Link href={lhref(locale, `/shop/${p.category}`)} className="ulink">{p.category}</Link>
+    </nav>
   );
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 md:px-8 md:py-12">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\\u003c") }} />
-      <nav aria-label="Breadcrumb" className="mb-5 text-[12px] text-[var(--muted)]">
-        <Link href={lhref(locale, "/shop")}>{d.shop}</Link> / <Link href={lhref(locale, `/shop/${p.category}`)} className="capitalize">{p.category}</Link>
-      </nav>
+    <div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\u003c") }} />
       <ProductDetail
         p={p} locale={locale} rating={{ avg: reviews.avg, count: reviews.count }} urgency={settings.conversion.stockUrgency ? settings.conversion.urgencyThreshold : 0}
-        whatsapp={settings.store.whatsapp} fastPath={settings.conversion.orderNowFastPath} waOrder={settings.conversion.whatsappOrder}
+        whatsapp={settings.store.whatsapp} fastPath={settings.conversion.orderNowFastPath} waOrder={settings.conversion.whatsappOrder} breadcrumb={crumb}
         labels={{ orderNow: d.orderNow, orderNowShort: d.orderNowShort, addToCart: d.addToCart, quantity: d.quantity, onlyLeft: d.onlyLeft, soldOut: d.soldOut, trust1: d.trust1, trust2: d.trust2, trust4: d.trust4 }}
       />
 
-      <div className="mt-12 grid gap-12 md:grid-cols-12">
-        <div className="md:col-span-7">
-          {acc(d.details, <div dangerouslySetInnerHTML={{ __html: desc }} />, true)}
-          {acc(d.sizeGuide, p.category === "rings" ? <RingSizeTable locale={locale} /> : p.category === "chains" ? <p>18&quot; sits at the collarbone · 20&quot; just below · 22&quot; mid‑chest · 24&quot; low. Most men choose 20–22&quot;.</p> : p.category === "bracelets" ? <p>19 cm fits wrists up to 17 cm; 21 cm fits wrists up to 19 cm. Measure your wrist and add 2 cm.</p> : <p>One size fits most.</p>)}
-          {acc(d.deliveryPayment, <><p>Inside Dhaka ৳70 (1–2 days) · Dhaka sub‑area ৳100 · Outside Dhaka ৳130 (2–4 days). Free inside Dhaka over ৳{settings.shipping.freeThreshold.toLocaleString("en-IN")}.</p><p>Pay with Cash on Delivery, bKash, Nagad or card.</p></>)}
-          {acc(d.care, <p>Wipe with a soft cloth after wearing. Avoid harsh chemicals and perfume directly on the piece. Store separately to avoid scratches.</p>)}
-          {acc(d.exchange, <p>Exchange any unused item within 7 days of delivery. WhatsApp us with your order number. <Link href={lhref(locale, "/return-exchange-policy")}>Read the policy</Link>.</p>)}
+      <section className="mx-auto mt-20 grid max-w-[1600px] gap-10 px-4 md:mt-28 md:grid-cols-12 md:px-10">
+        <div className="md:col-span-4">
+          <p className="eyebrow mb-4" data-reveal>{locale === "bn" ? "বিস্তারিত" : "The details"}</p>
+          <h2 className="h-section" data-reveal style={{ ["--i" as string]: 1 }}>{locale === "bn" ? "যত্নে তৈরি" : <>Made to <span className="serif-i">last</span></>}</h2>
         </div>
-      </div>
+        <div className="border-t border-[var(--line)] md:col-span-7 md:col-start-6">
+          {acc("details", d.details, <div dangerouslySetInnerHTML={{ __html: desc }} />, true)}
+          {acc("size-guide", d.sizeGuide, p.category === "rings" ? <RingSizeTable locale={locale} /> : p.category === "chains" ? <p>18&quot; sits at the collarbone · 20&quot; just below · 22&quot; mid‑chest · 24&quot; low. Most men choose 20–22&quot;.</p> : p.category === "bracelets" ? <p>19 cm fits wrists up to 17 cm; 21 cm fits wrists up to 19 cm. Measure your wrist and add 2 cm.</p> : <p>One size fits most.</p>)}
+          {acc("delivery", d.deliveryPayment, <><p>Inside Dhaka ৳70 (1–2 days) · Dhaka sub‑area ৳100 · Outside Dhaka ৳130 (2–4 days). Free inside Dhaka over ৳{settings.shipping.freeThreshold.toLocaleString("en-IN")}.</p><p>Pay with Cash on Delivery, bKash, Nagad or card.</p></>)}
+          {acc("care", d.care, <p>Wipe with a soft cloth after wearing. Avoid harsh chemicals and perfume directly on the piece. Store separately to avoid scratches.</p>)}
+          {acc("exchange", d.exchange, <p>Exchange any unused item within 7 days of delivery. WhatsApp us with your order number. <Link href={lhref(locale, "/return-exchange-policy")}>Read the policy</Link>.</p>)}
+        </div>
+      </section>
 
       {look.length > 0 && (
-        <section className="mt-16" aria-labelledby="look-h">
-          <h2 id="look-h" className="font-[family-name:var(--font-display)] text-3xl">{d.completeLook}</h2>
-          <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">{look.map((x) => <ProductCard key={x.id} p={x} locale={locale} labels={labels} />)}</div>
+        <section className="mt-24 border-t border-[var(--line)] pt-20 md:mt-32" aria-labelledby="look-h">
+          <div className="mx-auto mb-10 max-w-[1600px] px-4 md:px-10"><p className="eyebrow mb-4" data-reveal>{locale === "bn" ? "স্টাইল করুন" : "Style it with"}</p><h2 id="look-h" className="h-section" data-reveal style={{ ["--i" as string]: 1 }}>{d.completeLook}</h2></div>
+          <div className="mx-auto grid max-w-[1600px] grid-cols-2 gap-x-3 gap-y-10 px-4 md:grid-cols-3 md:gap-x-5 md:px-10">{look.map((x, i) => <div key={x.id} data-reveal style={{ ["--i" as string]: i }}><ProductCard p={x} locale={locale} labels={labels} /></div>)}</div>
         </section>
       )}
 
-      <section id="reviews" className="mt-16 scroll-mt-24" aria-labelledby="rev-h">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <h2 id="rev-h" className="font-[family-name:var(--font-display)] text-3xl">{d.reviews}{reviews.count > 0 && <span className="ml-3 align-middle text-[14px] text-[var(--muted)]"><Stars value={reviews.avg} /> {reviews.avg.toFixed(1)} · {reviews.count}</span>}</h2>
+      <section id="reviews" className="mx-auto mt-24 max-w-[1600px] scroll-mt-28 border-t border-[var(--line)] px-4 pt-20 md:mt-32 md:px-10" aria-labelledby="rev-h">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="eyebrow mb-4">{reviews.count > 0 ? `${reviews.avg.toFixed(1)} / 5 · ${reviews.count} ${d.reviews.toLowerCase()}` : d.reviews}</p>
+            <h2 id="rev-h" className="h-section">{locale === "bn" ? "ক্রেতাদের কথা" : <>Real <span className="serif-i">reviews</span></>}</h2>
+          </div>
           <ReviewForm productId={p.id} />
         </div>
-        {reviews.count === 0 ? <p className="mt-4 text-[14px] text-[var(--muted)]">{locale === "bn" ? "এখনো কোনো রিভিউ নেই। প্রথম রিভিউটি আপনার হোক।" : "No reviews yet. Bought this? Be the first."}</p> : (
-          <ul className="mt-6 grid gap-3 md:grid-cols-2">
+        {reviews.count === 0 ? <p className="mt-6 text-[14px] text-[var(--muted)]">{locale === "bn" ? "এখনো কোনো রিভিউ নেই। প্রথম রিভিউটি আপনার হোক।" : "No reviews yet — only verified buyers can review. Bought this? Be the first."}</p> : (
+          <ul className="mt-10 grid gap-px bg-[var(--line)] md:grid-cols-2">
             {reviews.items.map((r) => (
-              <li key={r.id} className="glass rounded-[var(--radius-card)] p-5">
+              <li key={r.id} className="bg-[var(--bg)] p-6 md:p-8">
                 <div className="flex items-center justify-between"><Stars value={r.rating} /><span className="text-[12px] text-[var(--muted)]">{new Date(r.createdAt).toLocaleDateString("en-GB")}</span></div>
-                <p className="mt-3 text-[15px]">{r.text}</p>
-                {r.photos.length > 0 && <div className="mt-3 flex gap-2">{r.photos.map((ph) => <Image key={ph} src={ph} alt="Customer photo" width={80} height={80} className="h-20 w-20 rounded-lg object-cover" />)}</div>}
-                <p className="mt-3 text-[12px] text-[var(--muted)]">{r.name}{r.verified && <> · ✦ {d.verifiedBuyer}</>}</p>
-                {r.reply && <p className="mt-3 border-l-2 border-[var(--line)] pl-3 text-[13px] text-[var(--muted)]"><b className="text-[var(--fg)]">ARGON:</b> {r.reply}</p>}
+                <p className="mt-4 text-[16px] leading-relaxed">{r.text}</p>
+                {r.photos.length > 0 && <div className="mt-4 flex gap-2">{r.photos.map((ph) => <Image key={ph} src={ph} alt="Customer photo" width={88} height={88} className="h-[88px] w-[88px] object-cover" />)}</div>}
+                <p className="mt-4 text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">{r.name}{r.verified && <> · ✦ {d.verifiedBuyer}</>}</p>
+                {r.reply && <p className="mt-4 border-l border-[var(--fg)] pl-3 text-[13px] text-[var(--muted)]"><b className="text-[var(--fg)]">ARGON:</b> {r.reply}</p>}
               </li>
             ))}
           </ul>
@@ -119,9 +129,9 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
       </section>
 
       {like.length > 0 && (
-        <section className="mt-16" aria-labelledby="like-h">
-          <h2 id="like-h" className="font-[family-name:var(--font-display)] text-3xl">{d.youMayLike}</h2>
-          <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">{like.map((x) => <ProductCard key={x.id} p={x} locale={locale} labels={labels} />)}</div>
+        <section className="mt-24 border-t border-[var(--line)] pt-20 md:mt-32" aria-labelledby="like-h">
+          <div className="mx-auto mb-10 max-w-[1600px] px-4 md:px-10"><p className="eyebrow mb-4" data-reveal>{locale === "bn" ? "আরও" : "More from"} {p.category}</p><h2 id="like-h" className="h-section" data-reveal style={{ ["--i" as string]: 1 }}>{d.youMayLike}</h2></div>
+          <Carousel label={d.youMayLike}>{like.map((x) => <ProductCard key={x.id} p={x} locale={locale} labels={labels} sizes="(max-width:768px) 72vw, 25vw" />)}</Carousel>
         </section>
       )}
       <div className="h-20 md:hidden" />

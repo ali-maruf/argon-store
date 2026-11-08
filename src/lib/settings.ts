@@ -10,7 +10,12 @@ export const DEFAULT_SETTINGS = {
     invoiceFooter: "Thank you for wearing the orbit. Exchanges within 7 days of delivery.",
   },
   announcement: { enabled: true, text: "Free delivery inside Dhaka over ৳1,500 ✦ Cash on Delivery available", textBn: "ঢাকার ভিতরে ৳১,৫০০+ অর্ডারে ফ্রি ডেলিভারি ✦ ক্যাশ অন ডেলিভারি", link: "/shop" },
-  hero: { headline: "Forged in Steel.", headlineBn: "ইস্পাতে গড়া।", cta: "Shop the Drop", ctaBn: "ড্রপ দেখুন", enable3d: true },
+  hero: {
+    headline: "Forged in Steel.", headlineBn: "ইস্পাতে গড়া।", cta: "Shop the Drop", ctaBn: "ড্রপ দেখুন",
+    eyebrow: "Drop 01 — Limited run", eyebrowBn: "ড্রপ ০১ — লিমিটেড",
+    video: "/video/hero.mp4", videoWebm: "/video/hero.webm", videoMobile: "/video/hero-mobile.mp4", videoMobileWebm: "/video/hero-mobile.webm", poster: "/video/hero-poster.webp", posterMobile: "/video/hero-mobile-poster.webp",
+    lookbookVideo: "/video/lookbook.mp4", lookbookWebm: "/video/lookbook.webm", lookbookPoster: "/video/lookbook-poster.webp",
+  },
   shipping: { freeThreshold: 1500, freeZones: ["inside_dhaka"] as string[] },
   payments: {
     cod: { enabled: true, advanceOutsideDhaka: false, otp: "off" as "off" | "always" | "flagged" },
@@ -29,12 +34,12 @@ export const DEFAULT_SETTINGS = {
   notifications: { ownerPhone: "", ownerEmail: "", telegramChatId: "", lowStockAlerts: true },
   seo: { indexing: true, maintenance: false },
   ugc: [
-    { image: "/products/30.webp", url: "https://instagram.com/argon.go_" },
-    { image: "/products/31.webp", url: "https://instagram.com/argon.go_" },
-    { image: "/products/28.webp", url: "https://instagram.com/argon.go_" },
-    { image: "/products/29.webp", url: "https://instagram.com/argon.go_" },
-    { image: "/products/7.webp", url: "https://instagram.com/argon.go_" },
-    { image: "/products/23.webp", url: "https://instagram.com/argon.go_" },
+    { image: "/products/clean/30.webp", url: "https://instagram.com/argon.go_" },
+    { image: "/products/clean/31.webp", url: "https://instagram.com/argon.go_" },
+    { image: "/products/clean/28.webp", url: "https://instagram.com/argon.go_" },
+    { image: "/products/clean/29.webp", url: "https://instagram.com/argon.go_" },
+    { image: "/products/clean/7.webp", url: "https://instagram.com/argon.go_" },
+    { image: "/products/clean/23.webp", url: "https://instagram.com/argon.go_" },
   ] as { image: string; url: string }[],
   nav: [
     { label: "Shop", href: "/shop" }, { label: "Rings", href: "/shop/rings" }, { label: "Chains", href: "/shop/chains" },

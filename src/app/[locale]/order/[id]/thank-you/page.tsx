@@ -45,7 +45,7 @@ export default async function ThankYou({ params, searchParams }: { params: Promi
       <p className="mt-3 text-[var(--muted)]">{prepaidPending ? (locale === "bn" ? "পেমেন্ট সম্পন্ন হয়নি। আবার চেষ্টা করুন বা ক্যাশ অন ডেলিভারি বেছে নিন।" : "Your payment didn't go through. Try again, or switch to Cash on Delivery.") : d.thankYouSub}</p>
       {(prepaidPending || payerr) && <RetryPayment orderId={o.id} token={k!} method={o.paymentMethod} codEnabled={settings.payments.cod.enabled} />}
 
-      <dl className="glass mx-auto mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-[var(--radius-card)] text-left text-[14px]">
+      <dl className="glass mx-auto mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-sm text-left text-[14px]">
         <div className="p-5"><dt className="eyebrow">{d.orderNumber}</dt><dd className="tnum mt-1 text-lg font-semibold">{o.orderNumber}</dd></div>
         <div className="p-5"><dt className="eyebrow">{d.total}</dt><dd className="tnum mt-1 text-lg font-semibold">{tk(o.total)}</dd></div>
         <div className="p-5"><dt className="eyebrow">{d.expectedDelivery}</dt><dd className="mt-1">{zone?.eta ?? "2–4 days"}</dd></div>
@@ -55,7 +55,7 @@ export default async function ThankYou({ params, searchParams }: { params: Promi
       <ul className="mt-6 space-y-3 text-left">
         {lines.map((l) => (
           <li key={l.variantId} className="flex items-center gap-3">
-            <Image src={l.image} alt="" width={56} height={56} className="h-14 w-14 rounded-xl object-cover" />
+            <Image src={l.image} alt="" width={56} height={56} className="h-14 w-14 rounded-sm object-cover" />
             <span className="flex-1 text-[14px]">{l.title}{l.variantTitle !== "Default" && <span className="text-[var(--muted)]"> · {l.variantTitle}</span>} × {l.qty}</span>
             <span className="tnum text-[14px]">{tk(l.price * l.qty)}</span>
           </li>

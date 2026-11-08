@@ -95,8 +95,9 @@ async function main() {
     };
     const prod = await db.product.upsert({ where: { slug: p.slug }, create: { slug: p.slug, ...data }, update: data });
     await db.productImage.deleteMany({ where: { productId: prod.id } });
-    const imgs = [p.img, ...(p.alt ?? [])];
-    await db.productImage.createMany({ data: imgs.map((n, k) => ({ productId: prod.id, url: `/products/${n}.webp`, alt: `${p.title}${k ? ` — view ${k + 1}` : ""}`, position: k, blurData: blur[`/products/${n}.webp`] })) });
+    // Clean product shot first, then the wide editorial crop (the hover image on cards), then clean alternates.
+    const imgs = [`/products/clean/${p.img}.webp`, `/editorial/${p.img}.webp`, ...(p.alt ?? []).map((n) => `/products/clean/${n}.webp`)];
+    await db.productImage.createMany({ data: imgs.map((url, k) => ({ productId: prod.id, url, alt: `${p.title}${k ? ` — view ${k + 1}` : ""}`, position: k, blurData: blur[url] ?? null, width: url.startsWith("/editorial") ? 1600 : 1000, height: url.startsWith("/editorial") ? 900 : 1000 })) });
     await db.productOption.deleteMany({ where: { productId: prod.id } });
     const realOpts = p.options.filter((o) => !(o.values.length === 1 && ["One size"].includes(o.values[0])));
     await db.productOption.createMany({ data: realOpts.map((o, k) => ({ productId: prod.id, name: o.name, values: o.values, position: k })) });
@@ -141,8 +142,10 @@ async function main() {
     await db.discount.create({ data: { title: "Any 2 rings for ৳699", automatic: true, type: "bundle", bundleQty: 2, bundlePrice: 699, appliesTo: { categories: ["rings"] } } });
 
   // Home sections
-  const sections = ["hero", "categories", "bestsellers", "trust", "limited", "ugc", "reviews", "newsletter"];
-  if (!(await db.homeSection.count())) await db.homeSection.createMany({ data: sections.map((type, position) => ({ type, position, enabled: true })) });
+  const sections = ["hero", "marquee", "categories", "bestsellers", "story", "lookbook", "limited", "mosaic", "reviews", "ugc"];
+  // Replace legacy section types from the first design; keep admin ordering otherwise.
+  await db.homeSection.deleteMany({ where: { type: { in: ["trust", "newsletter"] } } });
+  for (const [position, type] of sections.entries()) if (!(await db.homeSection.findFirst({ where: { type } }))) await db.homeSection.create({ data: { type, position, enabled: true } });
 
   // Pages
   const pages: { slug: string; title: string; titleBn: string; body: string }[] = [

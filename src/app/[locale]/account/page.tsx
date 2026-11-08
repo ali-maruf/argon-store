@@ -40,7 +40,7 @@ export default async function Account({ params }: { params: Promise<{ locale: Lo
           {orders.map((o) => {
             const lines = o.lineItems as LineSnapshot[];
             return (
-              <li key={o.id} className="glass flex flex-wrap items-center gap-4 rounded-2xl p-4">
+              <li key={o.id} className="glass flex flex-wrap items-center gap-4 rounded-sm p-4">
                 <div className="flex-1">
                   <p className="tnum font-semibold">{o.orderNumber} · ৳{o.total.toLocaleString("en-IN")}</p>
                   <p className="text-[13px] text-[var(--muted)]">{dateOnly(o.createdAt)} · {lines.map((l) => `${l.title} ×${l.qty}`).join(", ")}</p>
@@ -56,7 +56,7 @@ export default async function Account({ params }: { params: Promise<{ locale: Lo
       {addresses.length > 0 && (
         <>
           <h2 className="eyebrow mt-10 mb-4">Saved addresses</h2>
-          <ul className="space-y-2 text-[14px]">{addresses.map((a, i) => <li key={i} className="glass rounded-2xl p-4">{a.name} · {a.address}, {a.area}, {a.district}</li>)}</ul>
+          <ul className="space-y-2 text-[14px]">{addresses.map((a, i) => <li key={i} className="glass rounded-sm p-4">{a.name} · {a.address}, {a.area}, {a.district}</li>)}</ul>
         </>
       )}
     </div>
