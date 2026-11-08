@@ -3,3 +3,6 @@ assets
 scripts/local-db.mjs
 *.local.txt
 .env*
+.next
+.next-check
+node_modules

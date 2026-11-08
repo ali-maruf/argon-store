@@ -2,8 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "regions": ["sin1"],
   "crons": [
-    { "path": "/api/cron/courier-sync", "schedule": "*/30 * * * *" },
-    { "path": "/api/cron/abandoned", "schedule": "*/30 * * * *" },
+    { "path": "/api/cron/courier-sync", "schedule": "0 6 * * *" },
+    { "path": "/api/cron/abandoned", "schedule": "0 4 * * *" },
     { "path": "/api/cron/low-stock", "schedule": "0 3 * * *" },
     { "path": "/api/cron/review-requests", "schedule": "0 5 * * *" }
   ]
